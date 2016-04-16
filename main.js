@@ -20,7 +20,7 @@ function removeContact(event) {
   renderList();
 }
 
-var g_index = 0;
+var g_index = -1;
 function updateContact(event) {
   var index = $(this).index();
   var contactList = ContactStorage.get();
@@ -166,21 +166,19 @@ function addContact() {
 	console.log("addContact");
 	console.log("contactArray", contactArray);
 
-
   var contactList = ContactStorage.get();
-  contactList.push(contactArray); 		
+	if (g_index > 0) {
+	  contactList.splice(g_index, 1); // modify
+		contactList.splice(g_index, 1, contactArray);
+	  // ContactStorage.write(contactList);
+	  g_index = -1;
+
+	} else {
+	  contactList.push(contactArray); 		
+	}
+
   ContactStorage.write(contactList);
-
-
-
- //  contactList.splice(g_index, 1); // modify
-	// contactList.splice(g_index, 1, contactArray);
-  // ContactStorage.write(contactList);
-
-
   renderList();
-
-  
 }
 
 var ContactStorage = {
