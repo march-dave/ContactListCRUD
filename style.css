@@ -11,6 +11,10 @@ img {
 	height: 100px;
 }
 
+#btnUpdate {
+    display: none;
+}
+
 .form {
     position: relative;
     padding: 45px 15px 15px;

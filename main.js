@@ -60,6 +60,8 @@ function saveContact() {
 	$('#birthday').val('');
 	$('#favorite').val('');
 
+  $('#btnSave').show();
+
 	addContact();
 
 }
@@ -158,6 +160,14 @@ function updateContact(event, index) {
   renderList();
 
   $('#myModal').modal();
+  
+  if (index > 1) {
+	  $('#btnSave').hide();
+	  $('#btnUpdate').show();
+  } else {
+	  $('#btnUpdate').hide();
+  }
+
 }
 
 var ContactStorage = {
