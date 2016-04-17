@@ -7,23 +7,41 @@ function init() {
 
 	renderList();
 
-	$('table').on('click', '.btnDelete', removeContact);
+	$('table').on('click', '.btnDelete', eventSplit);
+	$('table').on('click', '.contactList', eventSplit);
 	// $('table').on('click', removeContact);
 
-	$('#btnUpdate').on('click', saveContact);
-	$('table').on('click', '.contactList', updateContact);
+	// eventSplit();
 
+	// $('#btnUpdate').on('click', saveContact);
+	$('#btnUpdate').on('click', saveContact);
 
 	$('#myModal').on('hidden.bs.modal', function (e) {
     $(this).find('input,textarea,select').val('').end();
 	})
+}
+
+function eventSplit(event) {
+
+	// debugger;
+
+	// $(this)
+	if (typeof event != 'undefined') {
+
+		if (  $('button').is(event.target) ){
+			// $('table').on('click', '.btnDelete', removeContact);
+			removeContact(event);
+		} else if ( $('img.img-circle').is(event.target) ) {
+			// $('table').on('click', '.contactList', saveContact);
+			updateContact(event, $(this).index() );
+		}
+	}
+	// debugger;
 
 }
 
 var contactArray = [];
 function saveContact() {
-
-	// console.log("saveContact");
 
 	var image = $('#image').val();
 
@@ -34,12 +52,9 @@ function saveContact() {
 	var birthday = $('#birthday').val();
 	var favorite = $('#favorite').val();
 
-	// debugger;
-
 	if (contactArray.length > 0) {
 		contactArray = [];	
 	}
-
 
 	contactArray.push(image);
 	contactArray.push(name);
@@ -107,7 +122,8 @@ function renderList() {
 			var $emailtd = $('<td>').text(c[4]);
 			var $birthdaytd = $('<td>').text(c[5]);
 			var $favoritetd = $('<td>').text(c[6]);
-			var $button = $('<td>').text('delete').addClass('btnDelete');
+			// var $button = $('<td>').html('delete').addClass('btnDelete');
+			var $button = $('<td>').append('<button>Delete').addClass('btnDelete');
 
 			array.push($imagetd);
 			array.push($nametd);
@@ -174,8 +190,10 @@ function removeContact(event) {
 }
 
 var g_index = -1;
-function updateContact(event) {
-  var index = $(this).index();
+function updateContact(event, index) {
+  // var index = $(this).index();
+  var index = index;
+	
   var contactList = ContactStorage.get();
 
   g_index = index;
