@@ -61,6 +61,7 @@ function saveContact() {
 	$('#favorite').val('');
 
   $('#btnSave').show();
+  $('#btnUpdate').hide();
 
 	addContact();
 
@@ -161,7 +162,7 @@ function updateContact(event, index) {
 
   $('#myModal').modal();
   
-  if (index > 1) {
+  if (index > 0) {
 	  $('#btnSave').hide();
 	  $('#btnUpdate').show();
   } else {
