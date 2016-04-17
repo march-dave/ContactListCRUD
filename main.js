@@ -7,12 +7,35 @@ function init() {
 
 	renderList();
 
-	$('.btn').on('dbclick', removeContact);
-	$('.contactList').on('click', updateContact);
+	$('table').on('click', '.btnDelete', removeContact);
+	// $('table').on('click', removeContact);
+
+	$('#btnUpdate').on('click', updateContact);
+	$('table').on('click', '.contactList', updateContact);
+
+
+	$('#myModal').on('hidden.bs.modal', function (e) {
+    $(this).find('input,textarea,select').val('').end();
+	})
+
+
+	// $('#modal1').on('hidden.bs.modal', function (e) {
+ //  $(this)
+ //    .find("input,textarea,select")
+ //       .val('')
+ //       .end()
+ //    .find("input[type=checkbox], input[type=radio]")
+ //       .prop("checked", "")
+ //       .end();
+	// })
+
+
 }
 
-function removeContact(event) {  
-  var index = $(this).index();
+function removeContact(event) {
+  var index = $(this).closest('tr').index();
+  // var index = $(this).index();
+  // console.log(index)
   var contactList = ContactStorage.get();
   contactList.splice(index, 1); // modify
   ContactStorage.write(contactList);
@@ -31,8 +54,6 @@ function updateContact(event) {
   
   // contactList.splice(index, 1); // modify
 
-  $('#myModal').modal();
-
 	$('#image').val(array[0]);
 	$('#name').val(array[1]);
 	$('#phone').val(array[2]);
@@ -42,10 +63,13 @@ function updateContact(event) {
 	$('#favorite').val(array[6]);
 
 	// contactList.splice(index, 1); // modify
-	// contactList.splice(index, 1, contactArray);
-  // ContactStorage.write(contactList);
+	contactList.splice(index, 1, contactArray);
+  ContactStorage.write(contactList);
 
   renderList();
+
+  $('#myModal').modal();
+
 }
 
 
@@ -53,7 +77,7 @@ var contactArray = [];
 
 function saveContact() {
 
-	console.log("saveContact");
+	// console.log("saveContact");
 
 	var image = $('#image').val();
 
@@ -130,7 +154,7 @@ function renderList() {
 			var $emailtd = $('<td>').text(c[4]);
 			var $birthdaytd = $('<td>').text(c[5]);
 			var $favoritetd = $('<td>').text(c[6]);
-			var $button = $('<td>').text('delete').addClass('btn');
+			var $button = $('<td>').text('delete').addClass('btnDelete');
 
 			array.push($imagetd);
 			array.push($nametd);
@@ -169,7 +193,7 @@ function addContact() {
   var contactList = ContactStorage.get();
 	if (g_index > 0) {
 	  contactList.splice(g_index, 1); // modify
-		contactList.splice(g_index, 1, contactArray);
+		// contactList.splice(g_index, 1, contactArray);
 	  // ContactStorage.write(contactList);
 	  g_index = -1;
 
