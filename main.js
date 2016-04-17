@@ -9,11 +9,6 @@ function init() {
 
 	$('table').on('click', '.btnDelete', eventSplit);
 	$('table').on('click', '.contactList', eventSplit);
-	// $('table').on('click', removeContact);
-
-	// eventSplit();
-
-	// $('#btnUpdate').on('click', saveContact);
 	$('#btnUpdate').on('click', saveContact);
 
 	$('#myModal').on('hidden.bs.modal', function (e) {
@@ -23,21 +18,14 @@ function init() {
 
 function eventSplit(event) {
 
-	// debugger;
-
-	// $(this)
 	if (typeof event != 'undefined') {
 
 		if (  $('button').is(event.target) ){
-			// $('table').on('click', '.btnDelete', removeContact);
 			removeContact(event);
 		} else if ( $('img.img-circle').is(event.target) ) {
-			// $('table').on('click', '.contactList', saveContact);
 			updateContact(event, $(this).index() );
 		}
 	}
-	// debugger;
-
 }
 
 var contactArray = [];
@@ -64,29 +52,6 @@ function saveContact() {
 	contactArray.push(birthday);
 	contactArray.push(favorite);
 
-	// var $tr = $('<tr>');
-	// var $image = $('<img>').attr('src', image).attr('class', 'img-circle');
-	// var $imagetd = $('<td>').append($image);
-	// var $nametd = $('<td>').text(name);
-	// var $phonetd = $('<td>').text(phone);
-	// var $addresstd = $('<td>').text(address);
-	// var $emailtd = $('<td>').text(email);
-	// var $birthdaytd = $('<td>').text(birthday);
-	// var $favoritetd = $('<td>').text(favorite);
-
-	// var array = [];
-	// array.push($imagetd);
-	// array.push($nametd);
-	// array.push($phonetd); 
-	// array.push($addresstd); 
-	// array.push($emailtd);
-	// array.push($birthdaytd);
-	// array.push($favoritetd);
-
-	// $tr.append(array);
-
-	// $('table').append($tr);
-
 	$('#image').val('');
 	$('#name').val('');
 	$('#phone').val('');
@@ -105,8 +70,6 @@ function renderList() {
 
   var contactList = ContactStorage.get();
 
-  	// console.log("renderList");
-
   	var counter = 0;
 
   	contactList.map(function (c, i, a) {
@@ -122,7 +85,6 @@ function renderList() {
 			var $emailtd = $('<td>').text(c[4]);
 			var $birthdaytd = $('<td>').text(c[5]);
 			var $favoritetd = $('<td>').text(c[6]);
-			// var $button = $('<td>').html('delete').addClass('btnDelete');
 			var $button = $('<td>').append('<button>Delete').addClass('btnDelete');
 
 			array.push($imagetd);
@@ -134,9 +96,6 @@ function renderList() {
 			array.push($favoritetd);
 			array.push($button);
 
-			// console.log("map");
-			// debugger;
-
 			$tr.append(array);
 
 			$('table').append($tr);
@@ -147,41 +106,26 @@ function renderList() {
 			counter++;
 
   	});
-
-  // var $lis = names.map(name => $('<li>').addClass('name').text(name) );
-  // $('.nameList').empty().append($lis);
-	
 }
 
 function addContact() {
-  // var newName = $('.newName').val();
-  // $('.newName').val('');
-
-	// console.log("addContact");
-	// console.log("contactArray", contactArray);
-
+  
   var contactList = ContactStorage.get();
 	if (g_index > 0) {
 		// Update
-	  // contactList.splice(g_index, 1); // modify
 		contactList.splice(g_index, 1, contactArray);
-	  // ContactStorage.write(contactList);
 	  g_index = -1;
 
 	} else {
 	  contactList.push(contactArray); 		
 	}
 
-	// contactList.splice(g_index, 1, contactArray);
-	// contactList.push(contactArray);
   ContactStorage.write(contactList);
   renderList();
 }
 
 function removeContact(event) {
   var index = $(this).closest('tr').index();
-  // var index = $(this).index();
-  // console.log(index)
   var contactList = ContactStorage.get();
   contactList.splice(index, 1);
   ContactStorage.write(contactList);
