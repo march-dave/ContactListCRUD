@@ -10,7 +10,7 @@ function init() {
 	$('table').on('click', '.btnDelete', removeContact);
 	// $('table').on('click', removeContact);
 
-	$('#btnUpdate').on('click', updateContact);
+	$('#btnUpdate').on('click', saveContact);
 	$('table').on('click', '.contactList', updateContact);
 
 
@@ -18,63 +18,9 @@ function init() {
     $(this).find('input,textarea,select').val('').end();
 	})
 
-
-	// $('#modal1').on('hidden.bs.modal', function (e) {
- //  $(this)
- //    .find("input,textarea,select")
- //       .val('')
- //       .end()
- //    .find("input[type=checkbox], input[type=radio]")
- //       .prop("checked", "")
- //       .end();
-	// })
-
-
 }
-
-function removeContact(event) {
-  var index = $(this).closest('tr').index();
-  // var index = $(this).index();
-  // console.log(index)
-  var contactList = ContactStorage.get();
-  contactList.splice(index, 1); // modify
-  ContactStorage.write(contactList);
-
-  renderList();
-}
-
-var g_index = -1;
-function updateContact(event) {
-  var index = $(this).index();
-  var contactList = ContactStorage.get();
-
-  g_index = index;
-
-  var array = contactList[index];
-  
-  // contactList.splice(index, 1); // modify
-
-	$('#image').val(array[0]);
-	$('#name').val(array[1]);
-	$('#phone').val(array[2]);
-	$('#address').val(array[3]);
-	$('#email').val(array[4]);
-	$('#birthday').val(array[5]);
-	$('#favorite').val(array[6]);
-
-	// contactList.splice(index, 1); // modify
-	contactList.splice(index, 1, contactArray);
-  ContactStorage.write(contactList);
-
-  renderList();
-
-  $('#myModal').modal();
-
-}
-
 
 var contactArray = [];
-
 function saveContact() {
 
 	// console.log("saveContact");
@@ -87,6 +33,13 @@ function saveContact() {
 	var email = $('#email').val();
 	var birthday = $('#birthday').val();
 	var favorite = $('#favorite').val();
+
+	// debugger;
+
+	if (contactArray.length > 0) {
+		contactArray = [];	
+	}
+
 
 	contactArray.push(image);
 	contactArray.push(name);
@@ -137,7 +90,7 @@ function renderList() {
 
   var contactList = ContactStorage.get();
 
-  	console.log("renderList");
+  	// console.log("renderList");
 
   	var counter = 0;
 
@@ -165,6 +118,9 @@ function renderList() {
 			array.push($favoritetd);
 			array.push($button);
 
+			// console.log("map");
+			// debugger;
+
 			$tr.append(array);
 
 			$('table').append($tr);
@@ -185,15 +141,14 @@ function addContact() {
   // var newName = $('.newName').val();
   // $('.newName').val('');
 
-	// contactArray
-
-	console.log("addContact");
-	console.log("contactArray", contactArray);
+	// console.log("addContact");
+	// console.log("contactArray", contactArray);
 
   var contactList = ContactStorage.get();
 	if (g_index > 0) {
-	  contactList.splice(g_index, 1); // modify
-		// contactList.splice(g_index, 1, contactArray);
+		// Update
+	  // contactList.splice(g_index, 1); // modify
+		contactList.splice(g_index, 1, contactArray);
 	  // ContactStorage.write(contactList);
 	  g_index = -1;
 
@@ -201,8 +156,46 @@ function addContact() {
 	  contactList.push(contactArray); 		
 	}
 
+	// contactList.splice(g_index, 1, contactArray);
+	// contactList.push(contactArray);
   ContactStorage.write(contactList);
   renderList();
+}
+
+function removeContact(event) {
+  var index = $(this).closest('tr').index();
+  // var index = $(this).index();
+  // console.log(index)
+  var contactList = ContactStorage.get();
+  contactList.splice(index, 1);
+  ContactStorage.write(contactList);
+
+  renderList();
+}
+
+var g_index = -1;
+function updateContact(event) {
+  var index = $(this).index();
+  var contactList = ContactStorage.get();
+
+  g_index = index;
+
+  var array = contactList[index];
+
+	$('#image').val(array[0]);
+	$('#name').val(array[1]);
+	$('#phone').val(array[2]);
+	$('#address').val(array[3]);
+	$('#email').val(array[4]);
+	$('#birthday').val(array[5]);
+	$('#favorite').val(array[6]);
+
+	contactList.splice(index, 1, contactArray);
+  ContactStorage.write(contactList);
+
+  renderList();
+
+  $('#myModal').modal();
 }
 
 var ContactStorage = {
